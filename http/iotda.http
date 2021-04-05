@@ -1,0 +1,24 @@
+### 获取华为云token
+POST https://iam.cn-north-4.myhuaweicloud.com/v3/auth/tokens
+Content-Type: application/json
+
+{
+  "auth": {
+    "identity": {
+      "methods": [
+        "password"
+      ],
+      "password": {
+        "user": {
+          "name": "xiongqiang333",
+          "password": "password",
+          "domain": {
+            "name": "xiongqiang333"
+          }
+        }
+      }
+    }
+
+  }
+}
+

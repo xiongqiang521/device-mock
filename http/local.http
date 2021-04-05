@@ -1,0 +1,44 @@
+###
+POST http://localhost:8080/token?username=xiongqiang333&pwd=password
+
+###
+POST http://localhost:8080/mocks?deviceId=605867618054bc02d86e3d8a_device_1617262045468&secret=1234567890
+Content-Type: application/json
+
+
+###
+GET http://localhost:8080/mocks
+Content-Type: application/json
+
+###
+POST http://localhost:8080/mocks/605867618054bc02d86e3d8a_device_1617262045468/message
+Content-Type: application/json
+
+{
+  "deviceId": "605867618054bc02d86e3d8a_device_1617262045468"
+}
+
+###
+GET http://localhost:8080/mocks/605867618054bc02d86e3d8a_device_1617262045468
+Content-Type: application/json
+
+###
+POST http://localhost:8080/mocks/605867618054bc02d86e3d8a_device_1617262045468/properties
+Content-Type: application/json
+
+[
+  {
+    "service_id": "profile2",
+    "properties": {
+      "ip": "123.123"
+    }
+  }
+]
+
+###
+PUT http://localhost:8080/mocks/605867618054bc02d86e3d8a_device_1617262045468/properties
+Content-Type: application/json
+
+###
+DELETE http://localhost:8080/mocks/605867618054bc02d86e3d8a_device_1617262045468/properties
+Content-Type: application/json
