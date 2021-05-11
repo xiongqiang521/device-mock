@@ -47,8 +47,8 @@ public class DeviceMockController {
         return deviceMockService.connectMock(deviceId, secret);
     }
 
-    @DeleteMapping("/mocks")
-    public MockDeviceInfo stopMock(String deviceId) {
+    @DeleteMapping("/mocks/{deviceId}")
+    public MockDeviceInfo stopMock(@PathVariable String deviceId) {
         return deviceMockService.stopMock(deviceId);
     }
 

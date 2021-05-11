@@ -22,3 +22,13 @@ Content-Type: application/json
   }
 }
 
+> {% client.global.set("token", response.headers.valueOf("X-Subject-Token")) %}
+
+###
+GET https://iotda.cn-north-4.myhuaweicloud.com/v5/iot/123/devices
+x-auth-token: {{token}}
+
+###
+GET https://iotda.cn-north-4.myhuaweicloud.com/v5/iot/123/devices/605867618054bc02d86e3d8a_device_1617262045468
+x-auth-token: {{token}}
+

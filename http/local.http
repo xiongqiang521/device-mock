@@ -1,13 +1,17 @@
-###
+### 登录
 POST http://localhost:8080/token?username=xiongqiang333&pwd=password
 
-###
+### 设备上线，建立连接
 POST http://localhost:8080/mocks?deviceId=605867618054bc02d86e3d8a_device_1617262045468&secret=1234567890
 Content-Type: application/json
 
 
-###
+### 获取模拟设备的列表
 GET http://localhost:8080/mocks
+Content-Type: application/json
+
+###
+DELETE http://localhost:8080/mocks
 Content-Type: application/json
 
 ###
@@ -35,10 +39,10 @@ Content-Type: application/json
   }
 ]
 
-###
+### 开启自动上报
 PUT http://localhost:8080/mocks/605867618054bc02d86e3d8a_device_1617262045468/properties
 Content-Type: application/json
 
-###
+### 关闭自动上报
 DELETE http://localhost:8080/mocks/605867618054bc02d86e3d8a_device_1617262045468/properties
 Content-Type: application/json

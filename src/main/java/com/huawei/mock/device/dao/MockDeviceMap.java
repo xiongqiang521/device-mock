@@ -1,8 +1,10 @@
 package com.huawei.mock.device.dao;
 
+import com.huawei.mock.device.config.MDServiceException;
 import com.huawei.mock.device.core.DeviceMockExecutor;
 import com.huawei.mock.device.core.MockDeviceInfo;
 import com.huaweicloud.sdk.iot.device.client.requests.CommandRsp;
+import org.eclipse.paho.client.mqttv3.internal.MessageCatalog;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -30,7 +32,10 @@ public class MockDeviceMap {
 
     public MockDeviceInfo start(String deviceId, String secret, Supplier<CommandRsp> commandFun) {
         DeviceMockExecutor deviceMockExecutor = new DeviceMockExecutor(deviceId, secret, commandFun);
-        deviceMockExecutor.connect();
+        int connect = deviceMockExecutor.connect();
+        if (connect != 0) {
+            throw new MDServiceException("connect fail: " + MessageCatalog.getMessage(connect));
+        }
         MAP.put(deviceId, deviceMockExecutor);
         return deviceMockExecutor.getStatus();
     }

@@ -2,19 +2,21 @@ package com.huawei.mock.device.core;
 
 import com.huaweicloud.sdk.iot.device.IoTDevice;
 import com.huaweicloud.sdk.iot.device.client.DeviceClient;
-import com.huaweicloud.sdk.iot.device.client.listener.CommandListener;
 import com.huaweicloud.sdk.iot.device.client.listener.DefaultActionListenerImpl;
 import com.huaweicloud.sdk.iot.device.client.requests.CommandRsp;
 import com.huaweicloud.sdk.iot.device.client.requests.DeviceMessage;
 import com.huaweicloud.sdk.iot.device.client.requests.ServiceProperty;
+import com.huaweicloud.sdk.iot.device.devicelog.DeviceLogService;
 import com.huaweicloud.sdk.iot.device.transport.ActionListener;
+import org.eclipse.paho.client.mqttv3.internal.MessageCatalog;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.*;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
 public class DeviceMockExecutor {
@@ -97,29 +99,27 @@ public class DeviceMockExecutor {
      *
      * @return
      */
-    public boolean connect() {
+    public int connect() {
         IoTDevice device = new IoTDevice(serverUri, deviceId, secret);
 
         //设置监听器接收下行
         client = device.getClient();
-        client.setCommandListener(new CommandListener() {
-            @Override
-            public void onCommand(String requestId, String serviceId, String commandName, Map<String, Object> paras) {
-                //language=JSON
-                String com = "{" +
-                        "  \"requestId\": \"%s\"," +
-                        "  \"serviceId\": \"%s\"," +
-                        "  \"commandName\": \"%s\"," +
-                        "  \"paras\": \"%s\"" +
-                        "}";
 
-                //处理命令，缓存在list中
-                commandList.add(String.format(com, requestId, serviceId, commandName, paras.toString()));
-                //发送命令响应
-                client.respondCommand(requestId, commandFun.get());
-            }
+        client.setCommandListener((requestId, serviceId, commandName, paras) -> {
+            //language=JSON
+            String com = "{" +
+                    "  \"requestId\": \"%s\"," +
+                    "  \"serviceId\": \"%s\"," +
+                    "  \"commandName\": \"%s\"," +
+                    "  \"paras\": \"%s\"" +
+                    "}";
+
+            //处理命令，缓存在list中
+            commandList.add(String.format(com, requestId, serviceId, commandName, paras.toString()));
+            //发送命令响应
+            client.respondCommand(requestId, commandFun.get());
         });
-        return device.init() == 0;
+        return device.init();
     }
 
     /**
